@@ -1,0 +1,18 @@
+Jan 26: Yue Li helps me figure out why my ray intersection always gives me full green screen.
+        Because I didn't consider the far clip plane.
+Jan 28: When I implemented Scene, primitive and shape, I read some chapters of "Ray tracing in one weekend",
+        and get inspired by the "hitable" class design.
+
+Jan 28: Haoran told me that unique_ptr can not use QList as the container, so I switch to vector
+
+Jan 28: Adam helps me about finding out the wrong usage of unique_ptr(should use move to change ownership, can't directly copy)
+
+Jan 28: Adam helps me figure out where to assign the primitive information to intersection object;
+
+Jan 28: Scratchpixel taught me how to calculate ray-plane intersection
+
+Feb 1: Scratchpixel taught me the intersection of shadow ray with objects in the scene(actually the same as primary ray intersection)
+
+Feb 3: Yue Li helps me figure out that why my sphere doesn't have correct normal as well as fix the shadow acne problem
+
+Feb 5: Scratch pixel reminds me of the model of phong.
