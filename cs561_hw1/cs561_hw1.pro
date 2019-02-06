@@ -32,7 +32,9 @@ SOURCES += \
     primitive.cpp \
     scene.cpp \
     sphere.cpp \
-    plane.cpp
+    plane.cpp \
+    material.cpp \
+    light.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,7 +46,9 @@ HEADERS += \
     shape.h \
     scene.h \
     sphere.h \
-    plane.h
+    plane.h \
+    material.h \
+    light.h
 
 FORMS += \
         mainwindow.ui

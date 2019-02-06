@@ -69,7 +69,7 @@ Color3f SpecularReflectionMaterial::GetScatteredColor(Intersection& i, Ray& r, S
                 //how to combine the base color with the reflected object?
                 //what is specular color?
                 Color3f hitcolor = temp_i.objectHit->material->GetScatteredColor(temp_i,temp_r,s,curr_depth + 1);
-                hitcolor
+                return hitcolor;
             }
         }
     }
