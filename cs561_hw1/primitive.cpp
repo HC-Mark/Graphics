@@ -9,3 +9,4 @@ bool Primitive::getIntersection(const Ray& r, Intersection& i) {
     }
     return false;
 }
+

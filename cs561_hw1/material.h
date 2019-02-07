@@ -8,7 +8,8 @@ class Scene;
 class Material {
 public:
     Color3f base_col;
-    Material(Color3f c) : base_col(c) {}
+    bool pass_shadow;
+    Material(Color3f c) : base_col(c), pass_shadow(false) {}
     virtual Color3f GetScatteredColor(Intersection& i, Ray& r, Scene& s, int cur_depth) = 0;
 };
 
@@ -44,8 +45,12 @@ class SpecularTransmissionMaterial : public Material {
 public:
     //constructor
     int max_depth;
-    SpecularTransmissionMaterial(Color3f c, int m) : Material(c), max_depth(m) {}
+    float iorIn, iorOut;
+    SpecularTransmissionMaterial(Color3f c, int m, float iorI, float iorO) : Material(c),max_depth(m), iorIn(iorI), iorOut(iorO) {
+        pass_shadow = true;
+    }
 
     Color3f GetScatteredColor(Intersection& i, Ray& r, Scene& s,int curr_depth);
+    Vector3f refract_dirt(Intersection& i, Vector3f light_vec);
 };
 #endif // MATERIAL_H

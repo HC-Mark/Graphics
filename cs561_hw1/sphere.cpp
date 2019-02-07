@@ -25,6 +25,7 @@ bool Sphere::getIntersection(const Ray &r, Intersection &i) {
         }
 
         temp = (-b + sqrt(discriminant))/(2.f*a);
+        int_p = temp_r.origin + temp * temp_r.direct;
         if(temp > 0) {
             i.t = temp;
             i.point = r.origin + temp * r.direct; //in world space, not object space

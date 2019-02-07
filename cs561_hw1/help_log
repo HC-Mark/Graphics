@@ -16,3 +16,8 @@ Feb 1: Scratchpixel taught me the intersection of shadow ray with objects in the
 Feb 3: Yue Li helps me figure out that why my sphere doesn't have correct normal as well as fix the shadow acne problem
 
 Feb 5: Scratch pixel reminds me of the model of phong.
+
+Feb 6: Read reflect and refraction article in Scratchpixel: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
+       using its formula to calculate the refract direction.
+
+        the white diffuse ball seems larger in refract ball

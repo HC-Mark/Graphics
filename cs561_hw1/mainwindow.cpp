@@ -112,11 +112,11 @@ QImage RenderScene_hw2() {
     glm::vec3 rs_trans(-3,0,2), rs_rot(0,0,0),rs_scale(4,4,4);//refractive specular
     glm::vec3 ab_trans(-3,0,2), ab_rot(0,0,0),ab_scale(2.5,2.5,2.5);//air bubble
     glm::vec3 rs2_trans(3,-2,-3), rs2_rot(0,0,0),rs2_scale(4,4,4);//refractive specular 2
-    glm::vec3 wd_trans(3,-2,-3), wd_rot(0,0,0),wd_scale(1,1,1);//white diffuse
+    glm::vec3 wd_trans(3,-2,-3), wd_rot(0,0,0),wd_scale(1);//white diffuse
     glm::vec3 rs3_trans(3,3.5,-3), rs3_rot(0,0,0),rs3_scale(3,3,3);//refractive specular 3
     glm::vec3 yd_trans(0,0,0), yd_rot(0,0,0),yd_scale(2,2,2);//yellow diffuse
     glm::vec3 ms_trans(-3,3.5,-3), ms_rot(0,0,0),ms_scale(3,3,3);//mirror specular
-    glm::vec3 ms2_trans(-3,3.5,-3), ms2_rot(0,0,0),ms2_scale(1,1,1);//mirror specular2
+    glm::vec3 ms2_trans(3,3.5,-3), ms2_rot(0,0,0),ms2_scale(1,1,1);//mirror specular2
 
     Transform ps(ps_trans,ps_rot,ps_scale), rs(rs_trans,rs_rot,rs_scale),ab(ab_trans,ab_rot,ab_scale);
     Transform rs2(rs2_trans,rs2_rot,rs2_scale), wd(wd_trans,wd_rot,wd_scale),rs3(rs3_trans,rs3_rot,rs3_scale);
@@ -133,37 +133,48 @@ QImage RenderScene_hw2() {
     Shape* m_s = new Sphere(ms);
     Shape* m_s2 = new Sphere(ms2);
 
-    //materials
-    Material* ps_m = new PhongMaterial(purple,10.f);
+    //materials first two scenes
+
     //Material* ps_m = new LambertianMaterial(purple);
 //    Material* rs_m = new LambertianMaterial(white);
 //    Material* ab_m = new LambertianMaterial(white);
 //    Material* rs2_m = new LambertianMaterial(ref_2);
-//    Material* rs2_m = new SpecularReflectionMaterial(ref_2,5);
 //    Material* wd_m = new LambertianMaterial(white);
-//    Material* rs3_m = new LambertianMaterial(white);
-    Material* yd_m = new LambertianMaterial(yellow);
+//    Material* yd_m = new LambertianMaterial(yellow);
+//    Material* ms_m = new LambertianMaterial(mirr_2);
+
+    //materials reflection and refraction scene
+    Material* ps_m = new PhongMaterial(purple,10.f);
+    Material* rs_m = new SpecularTransmissionMaterial(white,5,1.33,1);
+    Material* rs2_m = new SpecularTransmissionMaterial(ref_2,5,1.33,1);
+    Material* rs3_m = new SpecularTransmissionMaterial(white,5,1.33,1);
     Material* ms_m = new SpecularReflectionMaterial(mirr_2,5);
-//    Material* ms2_m = new LambertianMaterial(mirr_2);
+    Material* ms2_m = new SpecularReflectionMaterial(mirr_2,5);
+    Material* ab_m = new SpecularTransmissionMaterial(white,5,1,1.33);
+    Material* wd_m = new LambertianMaterial(white);
+    Material* yd_m = new LambertianMaterial(yellow);
 
     //primitive
     unique_ptr<Primitive> purple_specular(new Primitive("purple_specular", p_s,ps_m));
     unique_ptr<Primitive> mirrored_specular(new Primitive("mirrored_specular", m_s,ms_m));
-//    unique_ptr<Primitive> refractive_specular(new Primitive("refractive_specular", r_s,rs_m));
-//    unique_ptr<Primitive> refractive_specular2(new Primitive("refractive_specular2", r_s2,rs2_m));
-//    unique_ptr<Primitive> refractive_specular3(new Primitive("refractive_specular3", r_s3,rs3_m));
-//    unique_ptr<Primitive> air_bubble(new Primitive("air_bubble", a_b,ab_m));
-//    unique_ptr<Primitive> white_diffuse(new Primitive("white_diffuse", w_d,wd_m));
-//    unique_ptr<Primitive> mirrored_specular2(new Primitive("mirrored_specular2", m_s2,ms2_m));
+    unique_ptr<Primitive> refractive_specular(new Primitive("refractive_specular", r_s,rs_m));
+    unique_ptr<Primitive> refractive_specular2(new Primitive("refractive_specular2", r_s2,rs2_m));
+    unique_ptr<Primitive> refractive_specular3(new Primitive("refractive_specular3", r_s3,rs3_m));
+    unique_ptr<Primitive> air_bubble(new Primitive("air_bubble", a_b,ab_m));
+    unique_ptr<Primitive> white_diffuse(new Primitive("white_diffuse", w_d,wd_m));
+    unique_ptr<Primitive> mirrored_specular2(new Primitive("mirrored_specular2", m_s2,ms2_m));
     unique_ptr<Primitive> yellow_diffuse(new Primitive("yellow_diffuse", y_d,yd_m));
 
     //add to list
     p_list.push_back(std::move(purple_specular));
-//    p_list.push_back(std::move(refractive_specular));
-//    p_list.push_back(std::move(refractive_specular2));
+    p_list.push_back(std::move(refractive_specular));
+    p_list.push_back(std::move(refractive_specular2));
     p_list.push_back(std::move(mirrored_specular));
-//    p_list.push_back(std::move(refractive_specular3));
+    p_list.push_back(std::move(mirrored_specular2));
+    p_list.push_back(std::move(refractive_specular3));
     p_list.push_back(std::move(yellow_diffuse));
+    p_list.push_back(std::move(white_diffuse));
+    p_list.push_back(std::move(air_bubble));
 
 
     //lights
@@ -200,6 +211,9 @@ QImage RenderScene_hw2() {
     //traverse each pixel to get its color
     for(int x = 0; x < 400; ++x) {
         for(int y = 0; y < 400; ++y) {
+            if (x == 239 && y == 222) {
+                printf("hi");
+            }
             QColor RGB = cal_color(scene,x,y);
             q_image.setPixelColor(x,y,RGB);
         }
@@ -261,6 +275,7 @@ QImage RenderScene()
     //traverse each pixel to get its color
     for(int x = 0; x < 400; ++x) {
         for(int y = 0; y < 400; ++y) {
+
             QColor RGB = cal_color(scene,x,y);
             q_image.setPixelColor(x,y,RGB);
         }

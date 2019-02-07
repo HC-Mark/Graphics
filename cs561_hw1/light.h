@@ -20,7 +20,7 @@ public:
         position = glm::vec3(t.get_worldTransform() * position_raw);
     }
 
-    virtual bool visibile(Intersection& i, Scene& s) = 0;
+    virtual bool visibile(Intersection& i, Scene& s, Color3f& hitcolor) = 0;
 };
 
 class PointLight : public Light {
@@ -31,7 +31,7 @@ public:
     PointLight() : Light(){}
     PointLight(Color3f h, Color3f i, Transform t) : Light(h,i,t) {}
 
-    bool visibile(Intersection &i, Scene &s);
+    bool visibile(Intersection &i, Scene &s, Color3f& hitcolor);
 };
 
 #endif // LIGHT_H
